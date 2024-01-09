@@ -53,45 +53,43 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Container(
-        padding: padding,
-        margin: margin,
-        decoration: decoration,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (isShowHeaderDateText)
-              HeaderDateText(
-                  date: currentPageDate, style: widget.calendarStyle),
-            if (isShowHeaderDateText)
-              const SizedBox(
-                height: 8,
-              ),
-            customDayOfWeek(),
-            WeekPage(
-              selectedDate: selectedDate,
-              now: now,
-              style: widget.calendarStyle,
-              isAutoSelect: widget.isAutoSelect,
-              onChangedPage: (date, state) {
-                setState(() {
-                  currentPageDate = date;
-                });
-                widget.onChangedPage?.call(date, state);
-              },
-              onChangedSelectedDate: (date) {
-                setState(() {
-                  selectedDate = date;
-                });
-                widget.onChangedSelectedDate?.call(date);
-              },
+    return Container(
+      padding: padding,
+      margin: margin,
+      decoration: decoration,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isShowHeaderDateText)
+            HeaderDateText(
+                date: currentPageDate, style: widget.calendarStyle),
+          if (isShowHeaderDateText)
+            const SizedBox(
+              height: 8,
             ),
-            if (isShowFooterDateText)
-              FooterDateText(
-                  selectedDate: selectedDate, style: widget.calendarStyle),
-          ],
-        ),
+          customDayOfWeek(),
+          WeekPage(
+            selectedDate: selectedDate,
+            now: now,
+            style: widget.calendarStyle,
+            isAutoSelect: widget.isAutoSelect,
+            onChangedPage: (date, state) {
+              setState(() {
+                currentPageDate = date;
+              });
+              widget.onChangedPage?.call(date, state);
+            },
+            onChangedSelectedDate: (date) {
+              setState(() {
+                selectedDate = date;
+              });
+              widget.onChangedSelectedDate?.call(date);
+            },
+          ),
+          if (isShowFooterDateText)
+            FooterDateText(
+                selectedDate: selectedDate, style: widget.calendarStyle),
+        ],
       ),
     );
   }
