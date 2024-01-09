@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import '../shared/calendar_style.dart';
 import '../widgets/day_table_view.dart';
 
-import '../shared/utils.dart'
-    show getWeekdays, addDay, subtractDay, firstDayOfWeek;
+import '../shared/utils.dart' show getWeekdays, addDay, subtractDay, firstDayOfWeek;
 
 enum PageState {
   previous,
@@ -21,12 +20,14 @@ class WeekPage extends StatefulWidget {
     required this.isAutoSelect,
     this.onChangedSelectedDate,
     this.onChangedPage,
+    this.physics,
   });
 
   final DateTime now;
   final DateTime selectedDate;
   final CalendarStyle style;
   final bool isAutoSelect;
+  final ScrollPhysics? physics;
 
   final Function(DateTime)? onChangedSelectedDate;
   final Function(DateTime date, PageState state)? onChangedPage;
@@ -46,6 +47,7 @@ class _WeekPageState extends State<WeekPage> {
   late DateTime _slectedDate;
 
   DateTime get now => widget.now;
+
   DateTime get selectedDate => widget.selectedDate;
 
   @override
@@ -71,9 +73,9 @@ class _WeekPageState extends State<WeekPage> {
   }
 
   Widget pageViewBuilder() {
-    final PageController pageController =
-        PageController(initialPage: initialPage);
+    final PageController pageController = PageController(initialPage: initialPage);
     return PageView.builder(
+      physics: widget.physics,
       itemBuilder: (context, index) {
         final idx = _getIndex(index);
         return dayTable(idx);
@@ -129,10 +131,8 @@ class _WeekPageState extends State<WeekPage> {
     updateCurrentPageDate(value);
 
     int currentIndex = _getIndex(value);
-    int leftIndex =
-        (currentIndex - 1 < 0) ? pageCounts.length - 1 : currentIndex - 1;
-    int rightIndex =
-        (currentIndex + 1 > pageCounts.length - 1) ? 0 : currentIndex + 1;
+    int leftIndex = (currentIndex - 1 < 0) ? pageCounts.length - 1 : currentIndex - 1;
+    int rightIndex = (currentIndex + 1 > pageCounts.length - 1) ? 0 : currentIndex + 1;
 
     pageCounts[leftIndex] = pageCounts[currentIndex] - 1;
     pageCounts[rightIndex] = pageCounts[currentIndex] + 1;

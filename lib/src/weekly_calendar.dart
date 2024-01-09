@@ -22,9 +22,11 @@ class WeeklyCalendar extends StatefulWidget {
     this.isAutoSelect = true,
     this.onChangedSelectedDate,
     this.onChangedPage,
+    this.physics,
   });
 
   final CalendarStyle calendarStyle;
+  final ScrollPhysics? physics;
   final bool isAutoSelect;
   final Function(DateTime)? onChangedSelectedDate;
   final Function(DateTime date, PageState state)? onChangedPage;
@@ -39,10 +41,13 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
   DateTime currentPageDate = DateTime.now();
 
   EdgeInsets get padding => widget.calendarStyle.padding;
+
   EdgeInsets get margin => widget.calendarStyle.margin;
+
   BoxDecoration get decoration => widget.calendarStyle.decoration;
 
   bool get isShowHeaderDateText => widget.calendarStyle.isShowHeaderDateText;
+
   bool get isShowFooterDateText => widget.calendarStyle.isShowFooterDateText;
 
   @override
@@ -61,14 +66,14 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (isShowHeaderDateText)
-            HeaderDateText(
-                date: currentPageDate, style: widget.calendarStyle),
+            HeaderDateText(date: currentPageDate, style: widget.calendarStyle),
           if (isShowHeaderDateText)
             const SizedBox(
               height: 8,
             ),
           customDayOfWeek(),
           WeekPage(
+            physics: widget.physics,
             selectedDate: selectedDate,
             now: now,
             style: widget.calendarStyle,
@@ -87,8 +92,7 @@ class _WeeklyCalendarState extends State<WeeklyCalendar> {
             },
           ),
           if (isShowFooterDateText)
-            FooterDateText(
-                selectedDate: selectedDate, style: widget.calendarStyle),
+            FooterDateText(selectedDate: selectedDate, style: widget.calendarStyle),
         ],
       ),
     );
